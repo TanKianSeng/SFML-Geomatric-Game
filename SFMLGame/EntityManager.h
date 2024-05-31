@@ -1,0 +1,36 @@
+#pragma once
+
+#include "Entity.h"
+#include <vector>
+#include <map>
+#include <algorithm>
+
+typedef std::vector<std::shared_ptr<Entity>>	EntityVec;	//specify the collection 
+typedef std::map<std::string, EntityVec>		EntityMap;  //specify tag from its collection, example: a bullet from all the bullect entities.
+
+class EntityManager
+{
+	
+	EntityVec	m_entities;			//storing pointers
+	EntityVec	m_entitiesToAdd;	//AKA "waiting room", to avoid iterating invalidation
+	EntityMap	m_entityMap;
+	size_t		m_totalEntities = 0;
+
+
+	
+	
+	void removeDeadEntities(EntityVec& vec);
+public:
+	EntityManager();
+	
+	void update();
+	
+	std::shared_ptr<Entity> addEntity(const std::string & tag);
+
+	const EntityVec & getEntities();
+
+	bool checkEntitiesExist(const std::string& tag);
+	const EntityVec & getEntities(const std::string & tag);
+	
+};
+
